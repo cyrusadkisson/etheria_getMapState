@@ -1,6 +1,3 @@
-// We're using ES6 syntax because the instructions for using AWS Managed Blockchain do
-// and if we want to switch from a service like Infura to AMB later, it'll be easier.
-
 import constants from "./constants.js";
 import Web3 from 'web3';
 import namehash from 'eth-ens-namehash';
@@ -438,10 +435,6 @@ export const handler = async (event) => {
 					i++;
 				}
 
-				// then create the return envelope with metadata 
-				// and resolve
-				//				var randomInt = getRandomInt(0, web3s.length - 1);
-				//				web3s[randomInt].eth.getBlock("latest").then(function(result) {
 				web3s[0].eth.getBlock(event.params.querystring.atBlock, false).then(function(gottenBlock) {
 					var envelopeToReturn = { "timestamp": gottenBlock.timestamp, "version": event.params.querystring.version, "blockNumber": gottenBlock.number };
 					envelopeToReturn.tiles = mapToReturn;
@@ -453,24 +446,6 @@ export const handler = async (event) => {
 					//console.log("envelopeToReturn=" + JSON.stringify(envelopeToReturn, null, 2));
 					resolve(envelopeToReturn);
 				});
-				//				}).catch(function(caughtError) {
-				//					console.log("web3.eth.getBlock() caught error=" + caughtError + ". Trying again. (endpoint was" + web3s[randomInt].currentProvider.host + ") ");
-				//					var randomInt2 = getRandomInt(0, web3s.length - 1);
-				//					web3s[randomInt2].eth.getBlock("latest").then(function(result) {
-				//						var envelopeToReturn = { "timestamp": Date.now(), "version": event.params.querystring.version, "blockNumber": result.number };
-				//						envelopeToReturn.tiles = mapToReturn;
-				//						console.log("resolving envelopeToReturn (2nd try)");
-				//						console.log("timestamp=" + envelopeToReturn.timestamp);
-				//						console.log("blockNumber=" + envelopeToReturn.blockNumber);
-				//						console.log("version=" + envelopeToReturn.version);
-				//						console.log("tiles.length=" + envelopeToReturn.tiles.length);
-				//						resolve(envelopeToReturn);
-				//					}).catch(function(caughtError) {
-				//						console.log("web3.eth.getBlock() caught error=" + caughtError + ". Bailing. (endpoint was" + web3s[randomInt2].currentProvider.host + ") ");
-				//						reject(caughtError);
-				//					});
-				//				});
-
 
 			}).catch(function(err) { console.log("Promise.all(ensPromises) err=" + err); reject(err); });
 		}).catch(function(err) { console.log("Promise.all(promises) err=" + err); reject(err); });
